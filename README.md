@@ -1,8 +1,8 @@
 # ASCII Banner Generator
 
-A browser-based LinkedIn banner generator that renders elegant ASCII art at 1584 × 396 px — the LinkedIn standard header size. No frameworks, no build step, no dependencies. Just open the HTML file.
+A browser-based social banner generator that renders ASCII art themes across multiple social media formats. No frameworks, no build step, no dependencies. Just open the HTML file.
 
-![ASCII Banner Generator](https://img.shields.io/badge/format-1584%20×%20396%20px-c86440?style=flat-square) ![No dependencies](https://img.shields.io/badge/dependencies-none-4a4740?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.0-c86440?style=flat-square) ![No dependencies](https://img.shields.io/badge/dependencies-none-4a4740?style=flat-square) ![Formats](https://img.shields.io/badge/formats-4-4a4740?style=flat-square)
 
 ---
 
@@ -13,42 +13,84 @@ A browser-based LinkedIn banner generator that renders elegant ASCII art at 1584
 open index.html
 ```
 
-That's it. No npm, no server required.
+No npm, no server required. For live stock data (Yahoo Finance), serve over HTTP:
+
+```bash
+python3 -m http.server 8080
+# then open http://localhost:8080
+```
 
 ---
 
-## Features
+## Formats
 
-- **4 ASCII art themes** — each procedurally generated, never the same twice
-- **Fully editable text** — brand name and tagline update the canvas live
-- **High-DPI export** — renders at 2× (or your screen's pixel ratio) for crisp PNGs on Retina displays
-- **Seed-based variation** — drag the seed slider or hit Randomize to explore layouts
-- **One-click PNG download** — exports the full-resolution canvas
+| Format | Dimensions |
+|---|---|
+| LinkedIn | 1584 × 396 px |
+| Twitter/X | 1500 × 500 px |
+| Facebook | 851 × 315 px |
+| YouTube | 2560 × 1440 px |
 
 ---
 
-## The 4 Themes
+## The 5 Themes
 
-| Theme | Style | Key elements |
+| Theme | Meaning | Key elements |
 |---|---|---|
-| **The Chart** | Market price chart | `/`, `\`, `_`, `^`, `v` data line · area fill · peak labels · volume bars |
-| **The Map** | World map | Point-in-polygon continents · 10 financial centres (`NYC`, `LON`, `TYO`…) highlighted in orange |
-| **The Skyline** | City skyline | ~42 procedural buildings in 4 styles · tagline auto-fits into a rooftop billboard |
-| **The Banner** | Biplane towing a banner | Tow rope in accent orange · banner box auto-sizes to your tagline |
+| **The Chart** | Capital Market Dynamics & Growth | `/`, `\`, `_`, `^`, `v` data line · area fill · peak labels · volume strip · optional live ticker |
+| **The Map** | Global Logistics & Geopolitics | Point-in-polygon continents · 10 financial centres (`NYC`, `LON`, `TYO`…) · panel left or right |
+| **The Skyline** | Industrial Infrastructure & Real Estate | ~44 procedural buildings in 4 styles · tagline auto-fits into a rooftop billboard |
+| **The Banner** | Strategic Perspective & Vision | Top-down airliner or hot air balloon · tow rope · banner box auto-sizes to your tagline |
+| **ASCII Upload** | Custom image conversion | Upload any JPG/PNG/GIF/WebP · converted to character art in-browser |
 
 ---
 
 ## Controls
 
+### Text
 | Control | What it does |
 |---|---|
-| **Theme buttons** | Switch between the 4 ASCII themes |
-| **Brand / Name** | Large serif text placed in the canvas (Playfair Display) |
-| **Tagline** | Used inside the billboard, banner box, or as a subtitle |
-| **Text Position** | Left · Center · Right alignment |
-| **Seed slider** | Deterministic variation — same seed always gives the same layout |
-| **↺ Randomize** | Pick a random seed |
-| **Download PNG** | Exports a high-resolution PNG at `1584 × SCALE` pixels |
+| **Brand / Name** | Large text placed on the canvas |
+| **Tagline** | Used in billboard, banner box, or as a subtitle |
+| **Text Alignment** | Left · Center · Right |
+| **Tagline Position** | Theme default · or pin to any corner/edge (tl, tc, tr, bl, bc, br) |
+
+### Style
+| Control | What it does |
+|---|---|
+| **Background** | Canvas background colour |
+| **Ink / Text** | Primary text and ASCII art colour |
+| **ASCII Characters** | Colour of procedural ASCII characters (chart line, skyline, etc.) |
+| **Graphic Elements** | Accent colour — rope, chart peaks, fin markers, tagline |
+| **Brand Font** | Serif (Playfair Display) · Sans (Inter) · Mono (JetBrains Mono) |
+| **Export Quality** | 1× · 2× · 3× · 4× — multiplies canvas pixel dimensions |
+
+### Variation
+| Control | What it does |
+|---|---|
+| **Seed slider** | Deterministic variation — same seed = same layout |
+| **↺ Randomize** | Pick a random seed instantly |
+
+> The Variation section is hidden in ASCII Upload mode (seed has no effect there).
+
+### Theme-specific options
+
+**Chart — Hybrid Finance Engine**
+- Type any ticker: `BTC`, `ETH`, `SOL`… → fetches via CoinGecko (crypto)
+- Type any stock symbol: `AAPL`, `TSLA`, `MSFT`… → fetches via Yahoo Finance
+- Status indicators: `✓` live data · `~` seeded mock (CORS/offline fallback) · `✗` crypto not found
+
+**Map**
+- Toggle between Map Right and Map Left panel layouts
+
+**Banner**
+- ✈ Airplane — top-down view airliner with tow rope and banner box
+- 🎈 Balloon — centered hot air balloon, no rope
+
+**ASCII Upload**
+- Accepts JPG · PNG · GIF · WebP
+- Aspect-ratio-correct fit into the character grid
+- Automatically switches to the ASCII Upload theme on load
 
 ---
 
@@ -56,41 +98,45 @@ That's it. No npm, no server required.
 
 ```
 banner/
-├── index.html   — App shell, canvas element, control panel UI
-├── style.css    — Light-mode UI (cream #f4f2eb, charcoal #1c1b18, orange #c86440)
-└── script.js    — Canvas rendering engine, all 4 themes, UI wiring
+├── index.html        — App shell, canvas element, control panel UI
+├── style.css         — Light-mode UI (cream #f4f2eb, charcoal #1c1b18, orange #c86440)
+├── script.js         — Canvas rendering engine, all 5 themes, finance APIs, UI wiring
+└── tasks/
+    ├── todo.md       — Implementation task log
+    └── lessons.md    — Self-improvement notes
 ```
 
 No external files are downloaded at runtime except Google Fonts (Playfair Display, Inter, JetBrains Mono).
 
 ---
 
-## Customisation
+## Export
 
-### Change the default text
-Open `index.html` and edit the `value` attributes on the two inputs:
-```html
-<input id="brandText"   value="Your Brand" />
-<input id="taglineText" value="Your tagline here." />
-```
+- File named: `banner-{format}-{theme}-{seed}.png`
+- Physical size: `W × SCALE` by `H × SCALE` px
+- At default 2×: LinkedIn exports at **3168 × 792 px** — platforms downsample cleanly
+- Upload the high-res file directly; all major platforms handle the resize
+
+---
+
+## Customisation
 
 ### Change the colour palette
 Edit the `C` object at the top of `script.js`:
 ```js
 const C = {
-  bg:     '#f4f2eb',  // canvas background
-  ink:    '#1c1b18',  // primary ASCII art colour
-  accent: '#c86440',  // orange highlights & tagline
-  ...
+  bg:       '#f4f2eb',  // canvas background
+  ink:      '#1c1b18',  // primary text & ASCII art colour
+  accent:   '#c86440',  // graphic elements & tagline
+  asciiChar:'#1c1b18',  // procedural ASCII characters
 };
 ```
 
 ### Force a specific export resolution
-Change the scale factor near the top of `script.js`:
+Change the scale button default in `index.html` or set `SCALE` in `script.js`:
 ```js
-const SCALE = 3;  // 3× = exports at 4752 × 1188 px (ultra sharp)
+let SCALE = 3;  // 3× = LinkedIn exports at 4752 × 1188 px
 ```
-LinkedIn will downsample this to 1584 × 396 cleanly.
 
 ### Add a new theme
 1. Write a `renderMyTheme(rng)` function in `script.js`
@@ -99,21 +145,12 @@ LinkedIn will downsample this to 1584 × 396 cleanly.
 
 ---
 
-## Export Notes
-
-- The downloaded PNG is named `banner-{theme}-{seed}.png`
-- Physical export size: `1584 × SCALE` × `396 × SCALE` px
-- At default 2× SCALE: **3168 × 792 px** — LinkedIn downsamples this to the standard 1584 × 396 with no quality loss
-- For maximum sharpness, upload the high-res file directly; LinkedIn handles the resize
-
----
-
 ## Browser Support
 
 Works in all modern browsers (Chrome, Firefox, Safari, Edge). Requires:
 - HTML5 Canvas
 - CSS Grid
-- Google Fonts (optional — falls back to system monospace / serif / sans-serif)
+- Google Fonts (optional — falls back to system serif / sans-serif / monospace)
 
 ---
 
